@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datafile>
+  <url>http://www.xsd2xml.com</url>
+  <owner>str1234</owner>
+  <copyright>str1234</copyright>
+  <stream id="str1234">
+    <ordinal>123</ordinal>
+    <ratefactor>123</ratefactor>
+    <quantization>123</quantization>
+    <packedbits>123</packedbits>
+    <alignment>Right</alignment>
+    <encoding>str1234</encoding>
+    <channel id="str1234">
+      <centerfreq format="GHz" />
+      <translatedfreq format="GHz" />
+      <inverted>true</inverted>
+      <delaybias format="nsec" />
+      <artifact>http://www.xsd2xml.com</artifact>
+      <comment format="text" />
+      <system id="str1234" type="Receiver">
+        <model>str1234</model>
+        <comment format="text" />
+        <rfconfig id="str1234">
+          <comment format="text" />
+        </rfconfig>
+        <oscillator id="str1234">
+          <comment format="text" />
+        </oscillator>
+      </system>
+    </channel>
+    <delaybias format="nsec" />
+    <comment format="text" />
+  </stream>
+  <session id="str1234">
+    <scenario>str1234</scenario>
+    <campaign>str1234</campaign>
+    <location lat="3.1415926535" lon="3.1415926535" height="3.1415926535" />
+    <contact>str1234</contact>
+    <poc>str1234</poc>
+    <artifact>http://www.xsd2xml.com</artifact>
+    <comment format="text" />
+  </session>
+  <createDate>2012-12-13T12:12:12</createDate>
+  <modDate>2012-12-13T12:12:12</modDate>
+  <next>http://www.xsd2xml.com</next>
+  <previous>http://www.xsd2xml.com</previous>
+  <offset>123</offset>
+  <rate format="GHz" />
+  <subframe words="123" size="123" endian="Big" alignment="Right" />
+  <frame sizeHeader="123" sizeFooter="123" count="123" />
+  <artifact>http://www.xsd2xml.com</artifact>
+  <comment format="text" />
+</datafile>
