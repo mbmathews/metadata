@@ -1,7 +1,35 @@
 <?xml version='1.0' encoding='windows-1252'?>
 
-<xs:schema elementFormDefault="qualified" targetNamespace="http://www.ion.org/XMLSchema/GnssMetadata.xsd" xmlns="http://www.ion.org/XMLSchema/GnssMetadata.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<xs:simpleType name="SampleFormat">
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="http://www.ion.org/XMLSchema/GnssMetadata.xsd" 
+           xmlns="http://www.ion.org/XMLSchema/GnssMetadata.xsd" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Top Level Element Definition -->
+  <xs:element name="metadata" >
+    <xs:complexType >
+      <xs:sequence>
+        <xs:element name="include" minOccurs="0"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="datafile" type="DataFile" />
+          <xs:element name="session" type="Session" />
+          <xs:element name="channel" type="Channel" />
+          <xs:element name="system" type="System" />
+          <xs:element name="stream" type="Stream" />
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  
+  <!-- 
+  *******************************************************************************
+  * Simple Type Enumerations
+  *******************************************************************************
+  -->
+
+  <!-- SampleFormat Specifiers -->
+  <xs:simpleType name="SampleFormat">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="InQ"/>
 			<xs:enumeration value="InQn"/>
@@ -15,139 +43,113 @@
 			<xs:enumeration value="IQn"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:complexType name="Comment">
+
+  <!--  Comment Format Specifiers -->
+  <xs:simpleType name="CommentFormat">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="text"/>
+      <xs:enumeration value="html"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--  Duration Format Specifiers -->
+  <xs:simpleType name="DurationFormat">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="nsec"/>
+      <xs:enumeration value="psec"/>
+      <xs:enumeration value="usec"/>
+      <xs:enumeration value="msec"/>
+      <xs:enumeration value="sec"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Frequency Format Specifiers -->
+  <xs:simpleType name="FrequencyFormat">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="GHz"/>
+      <xs:enumeration value="Undefined"/>
+      <xs:enumeration value="Hz"/>
+      <xs:enumeration value="Ratio"/>
+      <xs:enumeration value="MHz"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Alignment Specifiers -->
+  <xs:simpleType name="Alignment">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Right"/>
+      <xs:enumeration value="Left"/>
+      <xs:enumeration value="Undefined"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Endian Specifiers -->
+  <xs:simpleType name="Endian">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Big"/>
+      <xs:enumeration value="Undefined"/>
+      <xs:enumeration value="Little"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- System Type Specifiers -->
+  <xs:simpleType name="SystemType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Receiver"/>
+      <xs:enumeration value="Processor"/>
+      <xs:enumeration value="Undefined"/>
+      <xs:enumeration value="Simulator"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <!-- 
+  *******************************************************************************
+  * Base Type Declarations
+  *******************************************************************************
+  -->
+
+  <!-- Comment Type Declaration -->
+	<xs:complexType name="Comment" mixed="true">
 		<xs:sequence/>
 		<xs:attribute name="format" type="CommentFormat"/>
 	</xs:complexType>
+
+  <!-- Angle Type Declaration -->
 	<xs:complexType name="Angle">
 		<xs:sequence/>
 	</xs:complexType>
-	<xs:complexType name="SubFrame">
-		<xs:annotation>
-			<xs:documentation>Formerly known as a Lump</xs:documentation>
-		</xs:annotation>
+  
+  <!-- Duration Type Declaration -->
+  <xs:complexType name="Duration" mixed="true">
+    <xs:sequence/>
+    <xs:attribute default="sec" name="format" type="DurationFormat"/>
+  </xs:complexType>
+
+  <!--  Frequency Type Declaration -->
+  <xs:complexType name="Frequency" mixed="true">
 		<xs:sequence/>
-		<xs:attribute name="words" type="xs:unsignedInt">
-			<xs:annotation>
-				<xs:documentation>Number of sample words per subframe, default is 1 if not defined.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute name="size" type="xs:unsignedInt">
-			<xs:annotation>
-				<xs:documentation>Whole number of bytes for subframe frame.  Defaults to largest number of bytes including the total number of words.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute name="endian" type="Endian">
-			<xs:annotation>
-				<xs:documentation>Endian ordering of the data.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute default="Undefined" name="alignment" type="Alignment"/>
+		<xs:attribute default="Hz" name="format" type="FrequencyFormat"/>
 	</xs:complexType>
-	<xs:complexType name="Stream">
-		<xs:sequence>
-			<xs:element maxOccurs="1" minOccurs="0" name="ordinal" type="xs:int">
-				<xs:annotation>
-					<xs:documentation>Ordinal index for specifying the order of multiple stream data sets. This is an optional parameter.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="ratefactor" type="xs:unsignedInt">
-				<xs:annotation>
-					<xs:documentation>If the rate factor (N) is greater than one, there will be N samples of the stream included per base rate period.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element  name="format" type="SampleFormat"/>
-			<xs:element name="quantization" type="xs:unsignedInt"/>
-			<xs:element maxOccurs="1" minOccurs="0" name="packedbits" type="xs:unsignedInt">
-				<xs:annotation>
-					<xs:documentation>The total number of bits per sample.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element default="Undefined" name="alignment" type="Alignment"/>
-			<xs:element name="encoding" type="xs:string"/>
-			<xs:element maxOccurs="1" name="channel" type="Channel"/>
-			<xs:element name="delaybias" type="Duration"/>
-			<xs:element maxOccurs="unbounded" minOccurs="0" name="comment" type="Comment"/>
-		</xs:sequence>
-		<xs:attribute name="id" type="xs:string"/>
-	</xs:complexType>
-	<xs:complexType name="Channel">
-		<xs:annotation>
-			<xs:documentation>Formerly known as band.</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="centerfreq" type="Frequency"/>
-			<xs:element name="translatedfreq" type="Frequency"/>
-			<xs:element name="inverted" type="xs:boolean"/>
-			<xs:element name="delaybias" type="Duration"/>
-			<xs:element maxOccurs="unbounded" minOccurs="0" name="artifact" type="xs:anyURI"/>
-			<xs:element maxOccurs="unbounded" minOccurs="0" name="comment" type="Comment"/>
-			<xs:element maxOccurs="1" minOccurs="0" name="system" type="System"/>
-		</xs:sequence>
-		<xs:attribute name="id" type="xs:string"/>
-	</xs:complexType>
-	<xs:simpleType name="Alignment">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="Right"/>
-			<xs:enumeration value="Left"/>
-			<xs:enumeration value="Undefined"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="Endian">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="Big"/>
-			<xs:enumeration value="Undefined"/>
-			<xs:enumeration value="Little"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:complexType name="Oscillator">
-		<xs:sequence>
-			<xs:element maxOccurs="unbounded" minOccurs="0" name="comment" type="Comment"/>
-		</xs:sequence>
-		<xs:attribute name="id" type="xs:string"/>
-	</xs:complexType>
-	<xs:simpleType name="FrequencyFormat">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="GHz"/>
-			<xs:enumeration value="Undefined"/>
-			<xs:enumeration value="Hz"/>
-			<xs:enumeration value="Ratio"/>
-			<xs:enumeration value="MHz"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:complexType name="System">
-		<xs:sequence>
-			<xs:element name="model" type="xs:string"/>
-			<xs:element maxOccurs="unbounded" minOccurs="0" name="comment" type="Comment"/>
-			<xs:element maxOccurs="unbounded" minOccurs="0" name="rfconfig" type="RfConfiguration"/>
-			<xs:element name="oscillator" type="Oscillator"/>
-		</xs:sequence>
-		<xs:attribute name="id" type="xs:string"/>
-		<xs:attribute name="type" type="SystemType"/>
-	</xs:complexType>
-	<xs:complexType name="RfConfiguration">
-		<xs:sequence>
-			<xs:element maxOccurs="unbounded" minOccurs="0" name="comment" type="Comment"/>
-		</xs:sequence>
-		<xs:attribute name="id" type="xs:string"/>
-	</xs:complexType>
-	<xs:complexType name="Frequency">
-		<xs:sequence/>
-		<xs:attribute default="MHz" name="format" type="FrequencyFormat"/>
-	</xs:complexType>
-	<xs:simpleType name="CommentFormat">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="text"/>
-			<xs:enumeration value="html"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:complexType name="Location">
+
+
+  <!--  Location Type Declaration -->
+  <xs:complexType name="Location">
 		<xs:sequence/>
 		<xs:attribute name="lat" type="xs:double"/>
 		<xs:attribute name="lon" type="xs:double"/>
 		<xs:attribute name="height" type="xs:double"/>
 	</xs:complexType>
-	<xs:complexType name="DataFile">
+
+  <!-- 
+  *******************************************************************************
+  * Core Elements
+  *******************************************************************************
+  -->
+  
+  
+  <!-- DataFile ComplexType Declaration -->
+  <xs:complexType name="DataFile">
 		<xs:sequence>
 			<xs:element name="url" type="xs:anyURI">
 				<xs:annotation>
@@ -156,88 +158,166 @@
 			</xs:element>
 			<xs:element maxOccurs="1" minOccurs="0" name="owner" type="xs:string"/>
 			<xs:element maxOccurs="1" minOccurs="0" name="copyright" type="xs:string"/>
-			<xs:element maxOccurs="unbounded" minOccurs="1" name="stream" type="Stream"/>
-			<xs:element maxOccurs="1" name="session" type="Session"/>
-			<xs:element name="createDate" type="xs:dateTime"/>
-			<xs:element maxOccurs="1" minOccurs="0" name="modDate" type="xs:dateTime">
-				<xs:annotation>
-					<xs:documentation>Modification date of the datafile.  This is an optional element.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element maxOccurs="1" minOccurs="0" name="next" type="xs:anyURI">
-				<xs:annotation>
-					<xs:documentation>Previous file URI in the sequence.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element maxOccurs="1" minOccurs="0" name="previous" type="xs:anyURI">
-				<xs:annotation>
-					<xs:documentation>Previous file URI in the sequence.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element maxOccurs="1" minOccurs="0" name="offset" type="xs:unsignedInt">
-				<xs:annotation>
-					<xs:documentation>Byte offset into file for start of stream.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="rate" type="Frequency"/>
-			<xs:element maxOccurs="1" minOccurs="0" name="subframe" type="SubFrame"/>
-			<xs:element maxOccurs="1" minOccurs="0" name="frame" type="Frame"/>
-			<xs:element maxOccurs="unbounded" minOccurs="0" name="artifact" type="xs:anyURI"/>
-			<xs:element maxOccurs="unbounded" minOccurs="0" name="comment" type="Comment"/>
-		</xs:sequence>
+      <xs:element name="createDate" type="xs:dateTime"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="modDate" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>Modification date of the datafile.  This is an optional element.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element maxOccurs="1" name="session" type="Session"/>
+      <xs:element name="rate" type="Frequency"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="offset" type="xs:unsignedInt">
+        <xs:annotation>
+          <xs:documentation>Byte offset into file for start of stream.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element maxOccurs="1" minOccurs="0" name="subframe" type="SubFrame"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="frame" type="Frame"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="next" type="xs:anyURI">
+        <xs:annotation>
+          <xs:documentation>Previous file URI in the sequence.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element maxOccurs="1" minOccurs="0" name="previous" type="xs:anyURI">
+        <xs:annotation>
+          <xs:documentation>Previous file URI in the sequence.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element maxOccurs="unbounded" minOccurs="1" name="stream" type="Stream"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="comment" type="Comment"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="artifact" type="xs:anyURI"/>
+    </xs:sequence>
 	</xs:complexType>
-	<xs:simpleType name="SystemType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="Receiver"/>
-			<xs:enumeration value="Processor"/>
-			<xs:enumeration value="Undefined"/>
-			<xs:enumeration value="Simulator"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:complexType name="Frame">
-		<xs:annotation>
-			<xs:documentation>This was formerly known as a chunk.</xs:documentation>
-		</xs:annotation>
-		<xs:sequence/>
-		<xs:attribute name="sizeHeader" type="xs:unsignedInt"/>
-		<xs:attribute name="sizeFooter" type="xs:unsignedInt"/>
-		<xs:attribute name="count" type="xs:unsignedInt">
-			<xs:annotation>
-				<xs:documentation>Count of subframes per frame.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-	</xs:complexType>
-	<xs:simpleType name="DurationFormat">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="nsec"/>
-			<xs:enumeration value="psec"/>
-			<xs:enumeration value="usec"/>
-			<xs:enumeration value="msec"/>
-			<xs:enumeration value="sec"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:complexType name="Duration">
-		<xs:sequence/>
-		<xs:attribute name="format" type="DurationFormat"/>
-	</xs:complexType>
-	<xs:complexType name="Session">
-		<xs:sequence>
-			<xs:element maxOccurs="1" minOccurs="0" name="scenario" type="xs:string"/>
-			<xs:element maxOccurs="1" minOccurs="0" name="campaign" type="xs:string"/>
-			<xs:element maxOccurs="1" minOccurs="0" name="location" type="Location"/>
-			<xs:element maxOccurs="1" minOccurs="0" name="contact" type="xs:string"/>
-			<xs:element maxOccurs="1" minOccurs="0" name="poc" type="xs:string"/>
-			<xs:element maxOccurs="unbounded" minOccurs="0" name="artifact" type="xs:anyURI"/>
-			<xs:element maxOccurs="unbounded" minOccurs="0" name="comment" type="Comment"/>
-		</xs:sequence>
-		<xs:attribute name="id" type="xs:string"/>
-	</xs:complexType>
-  <xs:element name="datafile" type="DataFile"/>
-  <xs:element name="session" type="Session"/>
-  <xs:element name="system" type="System"/>
-  <xs:element name="channel" type="Channel"/>
-  <xs:element name="stream" type="Stream"/>
-  <xs:element name="artifact" type="xs:anyURI"/>
-	<xs:element name="comment" type="Comment"/>
-  <xs:element name="include"/>
+
+  <!-- Stream Type Declaration -->
+  <xs:complexType name="Stream">
+    <xs:sequence>
+      <xs:element name="ratefactor" type="xs:unsignedInt">
+        <xs:annotation>
+          <xs:documentation>If the rate factor (N) is greater than one, there will be N samples of the stream included per base rate period.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="quantization" type="xs:unsignedInt"/>
+      <xs:element name="packedbits" maxOccurs="1" minOccurs="0" type="xs:unsignedInt">
+        <xs:annotation>
+          <xs:documentation>The total number of bits per sample.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="alignment" default="Undefined" type="Alignment"/>
+      <xs:element name="encoding" type="xs:string"/>
+      <xs:element name="format" type="SampleFormat"/>
+      <xs:element name="delaybias" type="Duration" minOccurs="0"/>
+      <xs:element name="channel" maxOccurs="1" type="Channel"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="comment" type="Comment"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="artifact" type="xs:anyURI"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string"/>
+  </xs:complexType>
+
+  <!-- Frame Type Declaration -->
+  <xs:complexType name="Frame">
+    <xs:annotation>
+      <xs:documentation>This was formerly known as a chunk.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence/>
+    <xs:attribute name="sizeHeader" type="xs:unsignedInt"/>
+    <xs:attribute name="sizeFooter" type="xs:unsignedInt"/>
+    <xs:attribute name="count" type="xs:unsignedInt">
+      <xs:annotation>
+        <xs:documentation>Count of subframes per frame.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!-- SubFrame Type Declaration -->
+  <xs:complexType name="SubFrame">
+    <xs:annotation>
+      <xs:documentation>Formerly known as a Lump</xs:documentation>
+    </xs:annotation>
+    <xs:sequence/>
+    <xs:attribute name="words" type="xs:unsignedInt">
+      <xs:annotation>
+        <xs:documentation>Number of sample words per subframe, default is 1 if not defined.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="size" type="xs:unsignedInt">
+      <xs:annotation>
+        <xs:documentation>Whole number of bytes for subframe frame.  Defaults to largest number of bytes including the total number of words.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="endian" type="Endian">
+      <xs:annotation>
+        <xs:documentation>Endian ordering of the data.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="Undefined" name="alignment" type="Alignment"/>
+  </xs:complexType>
+
+  <!-- Channel Type Declaration -->
+  <xs:complexType name="Channel">
+    <xs:annotation>
+      <xs:documentation>Formerly known as band.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="centerfreq" type="Frequency"  maxOccurs="1" minOccurs="0"/>
+      <xs:element name="translatedfreq" type="Frequency"  maxOccurs="1" minOccurs="0"/>
+      <xs:element name="inverted" type="xs:boolean"  maxOccurs="1" minOccurs="0"/>
+      <xs:element name="delaybias" type="Duration"  maxOccurs="1" minOccurs="0"/>
+      <xs:element name="system" type="System" maxOccurs="1" minOccurs="0"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="comment" type="Comment"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="artifact" type="xs:anyURI"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string"/>
+  </xs:complexType>
+
+  <!-- Session Type Declaration -->
+  <xs:complexType name="Session">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="scenario" type="xs:string"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="campaign" type="xs:string"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="location" type="Location"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="contact" type="xs:string"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="poc" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="comment" type="Comment"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="artifact" type="xs:anyURI"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string"/>
+  </xs:complexType>
+
+  <!--  System Type Declaration -->
+  <xs:complexType name="System">
+    <xs:sequence>
+      <xs:element name="model" type="xs:string" maxOccurs="1" minOccurs="0"/>
+      <xs:element name="rfconfig" type="RfConfiguration" maxOccurs="unbounded" minOccurs="0" />
+      <xs:element name="oscillator" type="Oscillator" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element name="comment" type="Comment" maxOccurs="unbounded" minOccurs="0" />
+      <xs:element name="artifact" type="xs:anyURI" maxOccurs="unbounded" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string"/>
+    <xs:attribute name="type" type="SystemType"/>
+  </xs:complexType>
+
+  <!-- Oscillator Type Declaration -->
+  <!-- This is specification is TBD -->
+  <xs:complexType name="Oscillator">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="comment" type="Comment"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="artifact" type="xs:anyURI"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string"/>
+  </xs:complexType>
+
+  <!--  RFConfiguration Type Declaration -->
+  <!-- This is specification is TBD -->
+  <xs:complexType name="RfConfiguration">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="comment" type="Comment"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="artifact" type="xs:anyURI"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string"/>
+  </xs:complexType>
+
+  
+
+  
 </xs:schema>
