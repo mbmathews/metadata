@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<IONSDR METAVER="1.1.1.0">  
+  
+  <!-- System Parameters -->
+  <TIMEZONE>UTC</TIMEZONE>
+  <FSBASE>56320000.1</FSBASE>
+  <CAMPAIGN>Collection Campaign</CAMPAIGN>
+  <SCENARIO>Specific Scenario</SCENARIO>
+  <EQUIPMENT>Equipment used: Make/Mode/Serial</EQUIPMENT>
+  <ANTENNA>Antenna Make/Model</ANTENNA>
+  <LOCATION>Location Coordinates</LOCATION>
+  <POC>Entity or person that collected data</POC> 
+  <CONTACT>Contact information</CONTACT>
+  
+  <!-- Band Parameters -->
+  <NUMBANDS>4</NUMBANDS>
+  <BAND STRIDX="0" NAME="L1 ANT1" FRF="1575420000.1" FIF="13680000.1" INV="0" BW3="20000000.1"></BAND>
+  <BAND STRIDX="1" NAME="L2 ANT1" FRF="1227600000.1" FIF="13680000.1" INV="0" BW3="24000000.1"></BAND>
+  <BAND STRIDX="2" NAME="G1 ANT1" FRF="1602000000.1" FIF="13680000.1" INV="0" BW3="26000000.1"></BAND>
+  <BAND STRIDX="3" NAME="G2 ANT1" FRF="1246000000.1" FIF="13680000.1" INV="0" BW3="26000000.1"></BAND>
+
+  <!-- Stream Parameters -->
+  <NUMSTREAMS>4</NUMSTREAMS>
+  <STREAM NAME="S0" SF="1" ENC="SM" QTZ="1" BTP="1" ALN="N"></STREAM>
+  <STREAM NAME="S1" SF="1" ENC="SM" QTZ="1" BTP="1" ALN="N"></STREAM>
+  <STREAM NAME="S2" SF="1" ENC="SM" QTZ="1" BTP="1" ALN="N"></STREAM>
+  <STREAM NAME="S3" SF="1" ENC="SM" QTZ="1" BTP="1" ALN="N"></STREAM>
+  
+  <!-- Lump Parameters -->
+<LUMP>
+<STRIDX>0</STRIDX>
+<STRIDX>1</STRIDX>
+<STRIDX>2</STRIDX>
+<STRIDX>3</STRIDX>
+</LUMP> 
+  
+  <!-- Chunk Parameters -->
+  <CHUNK NLMP="1" TYPE="UINT32" NWORDS="1" ENDIAN="L" PAD="N" SHIFT="R"></CHUNK>
+
+  <!-- Frame Parameters -->
+  <FRAME NUMBYTES="7044" HEADERBYTES="0" FOOTERBYTES="4" NUMCHUNKS="56320"></FRAME>
+  
+  <!-- Data Integrity Parameters -->
+  <INTEGRITY TYPE="COUNT" BYTEOFFSET="7040" SIZEBYTES="4" MASK="00FFFFFFFF"></INTEGRITY>
+
+<!-- Lane Parameters -->
+<NUMLANES>1</NUMLANES>
+<LANEINDEX>0</LANEINDEX>
+<TOFFSETMS>0.1</TOFFSETMS>
+
+<!-- File Parameters -->
+<BYTEOFFSET>1234</BYTEOFFSET>
+<CREATETIME>2014,12,31,23,59,59,999></CREATETIME>
+<PREVIOUSFILE></PREVIOUSFILE>
+<NEXTFILE>WideBand_1bit_L1L2R1R2_001.dat</NEXTFILE>
+
+<!-- Event Parameters -->
+<NUMEVENTS>1</NUMEVENTS>
+  <EVENT INDEX="0" TIME="2015,01,01,00,00,00,001" TYPE="Anomaly" ></EVENT>
+  
+</IONSDR>
+
