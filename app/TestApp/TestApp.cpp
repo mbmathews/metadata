@@ -22,13 +22,13 @@ using namespace GnssMetadata;
 
 int main(int, char**)
 {
-	Metadata md;
-	md.Id( "set1");
-	md.DataFile().push_back(DataFile("file1"));
+	//Metadata md;
+	//md.Id( "set1");
+	//md.DataFiles().push_back(DataFile("file1"));
 
 	Metadata md2;
 	XmlProcessor xproc;
-	if( xproc.Load( "metadata.xml", false, md2) )
+	if( xproc.Load( "testmetadata1.xml", false, md2) )
 		printf("Xml Processed successfully.\n");
 
 }

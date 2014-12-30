@@ -40,8 +40,27 @@ namespace GnssMetadata
 		Metadata( const String& id) : AttributedObject( id){}
 		Metadata() {}
 		Metadata(const Metadata& rhs) 
-			: AttributedObject( rhs)
+			: AttributedObject( rhs), _includes(rhs._includes), _datafiles( rhs._datafiles),
+			_channels(rhs._channels), _streams(rhs._streams), _sessions( rhs._sessions),
+			_systems(rhs._systems)
 		{}	
+
+
+		const Metadata& operator=( const Metadata& rhs)
+		{
+			if( &rhs == this)
+				return *this;
+			AttributedObject::operator =(rhs);
+
+			_includes = rhs._includes;
+			_datafiles = rhs._datafiles;
+			_channels = rhs._channels; 
+			_streams = rhs._streams; 
+			_sessions = rhs._sessions;
+			_systems = rhs._systems;
+			return *this;
+		}
+
 
 		const AnyUriList& Includes() const 
 		{
@@ -52,11 +71,11 @@ namespace GnssMetadata
 			return _includes;
 		}
 
-		const DataFileList& DataFile( ) const
+		const DataFileList& DataFiles( ) const
 		{
 			return _datafiles;
 		}
-		DataFileList& DataFile( )
+		DataFileList& DataFiles( )
 		{
 			return _datafiles;
 		}
@@ -70,11 +89,11 @@ namespace GnssMetadata
 			return _channels;
 		}
 
-		const StreamList& Stream( ) const
+		const StreamList& Streams( ) const
 		{
 			return _streams;
 		}
-		StreamList& Stream( )
+		StreamList& Streams( )
 		{
 			return _streams;
 		}

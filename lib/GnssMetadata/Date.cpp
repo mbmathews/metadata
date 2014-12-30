@@ -25,5 +25,5 @@ using namespace GnssMetadata;
  */
 String Date::toString( const String & sFormat )
 {
-	return "Date not implemented yet";
+	return _sdate;
 }

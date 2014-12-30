@@ -70,6 +70,7 @@ namespace GnssMetadata
 		void Value( const double value, FrequencyFormat fmt = Hz )
 		{
 			_value.doubleVal = value;
+			_format = fmt;
 		}
 
 		void Value( long numerator, long denominator)

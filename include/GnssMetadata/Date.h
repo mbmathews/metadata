@@ -26,11 +26,20 @@ namespace GnssMetadata
 	{
 		
 	public:
+		Date() {}
+		Date( const char* pszDate) : _sdate( pszDate){}
+		Date( int wk, double seconds) 
+		{
+
+		}
+		const Date& operator=( const Date& rhs){return *this;}
 		/**
 		 *  Returns a string representation of the object.
 		 *  
 		 */
 		virtual String toString( const String & sFormat = DefaultFormat );
+	private:
+		String _sdate;
 	};
 	
 }

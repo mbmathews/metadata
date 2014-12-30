@@ -43,6 +43,15 @@ namespace GnssMetadata
 			_comments( rhs._comments), _artifacts(rhs._artifacts)
 		{}
 
+		const AttributedObject& operator=( const AttributedObject& rhs)
+		{
+			_id = rhs._id;
+			_bIsReference = rhs._bIsReference;
+			_comments = rhs._comments;
+			_artifacts = rhs._artifacts;
+			return *this;
+		}
+
 		void Id( const String& id )
 		{
 			_id = id;

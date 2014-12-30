@@ -42,6 +42,14 @@ namespace GnssMetadata
 		}
 
 		/**
+		 * Returns true if Frame state is not in default configuration.
+		 */
+		bool IsDefined() const 
+		{
+			return _count > 1 || _sizeHeader > 0 || _sizeFooter > 0;
+		}
+
+		/**
 		 * Gets the count of subframes per frame
 		 */
 		size_t Count( ) const

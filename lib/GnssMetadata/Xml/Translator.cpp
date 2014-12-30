@@ -23,13 +23,21 @@ using namespace GnssMetadata;
 using namespace tinyxml2;
 
 
+/******************************************************************************
+* Translator Implementation
+/*****************************************************************************/
+
 /**
  * Processes the current element within the context of the attributed object, delegates
  * out to XmlProcessor to allow other translators to process the data.
  */
 bool Translator::ReadElement(AttributedObject& aobj, Context & ctxt, const tinyxml2::XMLElement & elem, AccessorAdaptorBase* pAdaptor)
 {
-	return 	ctxt.proc.ReadElement( aobj, ctxt, elem, pAdaptor);
+	//Create a context for attributed object and then
+	//process with the translator.
+	Context ctxtnew( ctxt.proc, this, &aobj);
+
+	return 	ctxt.proc.ReadElement( ctxtnew, elem, pAdaptor);
 }
 
 /**
@@ -37,24 +45,35 @@ bool Translator::ReadElement(AttributedObject& aobj, Context & ctxt, const tinyx
  */
 void Translator::WriteElement( const Object * pObject, pcstr pszName, Context & ctxt, tinyxml2::XMLElement & elem )
 {
-	return 	ctxt.proc.WriteElement( pObject, pszName, ctxt, elem);
+	//Create a context for attributed object and then
+	//process with the translator.
+	Context ctxtnew( ctxt.proc, this, NULL);
+
+	return 	ctxt.proc.WriteElement( pObject, pszName, ctxtnew, elem);
 }
 
 /**
  * Reads the attributed object id, comments, and artifacts.
  */
-bool Translator::ReadAttributedObject( AttributedObject& aobj, Context& ctxt, const tinyxml2::XMLElement & elem)
+bool Translator::ReadAttributedObject( AttributedObject& aobj, 
+		Context& ctxt, const tinyxml2::XMLElement & elem, bool bIdAttributeRequired )
 {
 	//Grab the ID.
 	pcstr szid = elem.Attribute("id");
-	throw GnssMetadata::TranslationException( "Required id attribute not defined.");
-	aobj.Id(szid);
+	if( szid == NULL)
+	{
+		if( bIdAttributeRequired )
+			throw GnssMetadata::TranslationException( "Required id attribute not defined.");
+	}
+	else
+		aobj.Id(szid);
 
 	//Parse the comments.
 	const XMLElement* pelem = elem.FirstChildElement("comment");
-	for( ;pelem != NULL; pelem = elem.NextSiblingElement("comment"))
+	for( ;pelem != NULL; pelem = pelem->NextSiblingElement("comment"))
 	{
-		Comment::CommentFormat fmt = (strcmp(pelem->Attribute("format","text"), "text"))
+		const char* szFmt = pelem->Attribute("format");
+		Comment::CommentFormat fmt = (strcmp(szFmt, "text") == 0)
 			? Comment::text : Comment::html;
 		Comment comment( pelem->GetText(), fmt);
 		aobj.Comments().push_back( comment);
@@ -62,7 +81,7 @@ bool Translator::ReadAttributedObject( AttributedObject& aobj, Context& ctxt, co
 
 	//Parse the Artifacts.
 	pelem = elem.FirstChildElement("artifact");
-	for( ;pelem != NULL; pelem = elem.NextSiblingElement("artifact"))
+	for( ;pelem != NULL; pelem = pelem->NextSiblingElement("artifact"))
 	{
 		AnyUri auri( pelem->GetText());
 		aobj.Artifacts().push_back( auri);

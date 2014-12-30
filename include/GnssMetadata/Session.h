@@ -37,6 +37,19 @@ namespace GnssMetadata
 			_location(rhs._location), _poc(rhs._poc),
 			_scenario(rhs._scenario)
 		{}	
+		const Session& operator=( const Session& rhs)
+		{
+			if( &rhs == this)
+				return *this;
+			AttributedObject::operator =(rhs);
+			_campaign = rhs._campaign; 
+			_contact = rhs._contact;
+			_location = rhs._location; 
+			_poc = rhs._poc;
+			_scenario = rhs._scenario;
+			return *this;
+		}
+
 
 		String Campaign( ) const
 		{
@@ -97,8 +110,6 @@ namespace GnssMetadata
 		String _campaign;
 		
 		String _contact;
-		
-		String _id;
 		
 		GnssMetadata::Location _location;
 		

@@ -44,7 +44,19 @@ namespace GnssMetadata
 		System( const String& id = "") 
 			: AttributedObject( id), _type( Undefined) {}
 		System(const System& rhs) 
-			: AttributedObject( rhs), _type( rhs._type) {}			
+			: AttributedObject( rhs), _type( rhs._type), _model( rhs._model),
+			_oscillator( rhs._oscillator), _rfconfig( rhs._rfconfig){}		
+		const System& operator=( const System& rhs)
+		{
+			if( &rhs == this)
+				return *this;
+			AttributedObject::operator =(rhs);
+			_type = rhs._type;
+			_model = rhs._model;
+			_oscillator = rhs._oscillator;
+			_rfconfig = rhs._rfconfig;
+			return *this;
+		}
 
 		/**
 		 * Gets the system model information.
@@ -111,14 +123,14 @@ namespace GnssMetadata
 		
 	private:
 		/**
-		 * Specifies the model information for the system.
-		 */
-		String _model;
-
-		/**
 		 * Specifies the general type of the system responsible for producing the data.
 		 */
 		SystemType _type;
+
+		/**
+		 * Specifies the model information for the system.
+		 */
+		String _model;
 		
 		/**
 		 * System oscillator information.

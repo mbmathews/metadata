@@ -24,14 +24,16 @@
 
 namespace GnssMetadata
 {
-	class Object;
+	class  Object;
 	struct NodeEntry;
+	struct AccessorAdaptorBase;
 
 	/**
 	 * All XML translators derive from this class and conform to the interface specifications
 	 */
 	class Translator
 	{
+		friend class XmlProcessor;
 	protected:
 		typedef const char* pcstr;
 		
@@ -51,6 +53,14 @@ namespace GnssMetadata
 		virtual void OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, tinyxml2::XMLElement & elem ) = 0;
 	protected:
 		/**
+		* Accesor returns the array of allowed xml nodes for this
+		* instance of a translator.  Translators are associated with a xml
+		* element, and provides the information on valid sub-elements, if any.
+		* return NULL If sub-elements are not allowed.
+		*/
+		NodeEntry* GetAllowedNodes() const { return _nodesAllowed;}
+
+		/**
 		 * Processes the current element within the context of the attributed object, delegates
 		 * out to XmlProcessor to allow other translators to process the data.
 		 */
@@ -64,33 +74,16 @@ namespace GnssMetadata
 		/**
 		 * Reads the attributed object id, comments, and artifacts.
 		 */
-		bool ReadAttributedObject( AttributedObject& aobj, Context& ctxt, const tinyxml2::XMLElement & elem);
+		static bool ReadAttributedObject( AttributedObject& aobj, Context& ctxt, const tinyxml2::XMLElement & elem, bool bIdAttributeRequired = true);
 		
 		/**
 		 * Writes the attributed object id, comments, and artifacts.
 		 */
-		void WriteAttributedObject(const AttributedObject& aobj, Context& ctxt, tinyxml2::XMLElement & elem);
-	protected:
+		static void WriteAttributedObject(const AttributedObject& aobj, Context& ctxt, tinyxml2::XMLElement & elem);
+
+	private:
 		NodeEntry* _nodesAllowed;
 	};
-
-
-	/**
-	 * NodeEntry is a single entry in a Node list array.
-	 */
-	struct NodeEntry
-	{ 
-		const char* pszNodeName; 
-		const char* pszTranslatorId;
-	};
-
-	/**
-	* Nodelists are defined to specify allowed child nodes within current node.
-	* Macros are used to specify nodelists on heap.
-	*/
-	#define NODELIST_BEGIN(name) static const GnssMetadata::NodeEntry  name[] = { 
-	#define NODELIST_ENTRY( nodename, idTranslator) { nodename, idTranslator },
-	#define NODELIST_END {"",""} }; 
 
 }
 #endif

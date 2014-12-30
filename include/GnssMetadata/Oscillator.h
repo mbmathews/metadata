@@ -30,6 +30,13 @@ namespace GnssMetadata
 		Oscillator(const Oscillator& rhs) 
 			: AttributedObject( rhs)
 		{}	
+		const Oscillator& operator=( const Oscillator& rhs)
+		{
+			if( &rhs == this)
+				return *this;
+			AttributedObject::operator =(rhs);
+			return *this;
+		}
 	};
 	
 }

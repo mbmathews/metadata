@@ -43,6 +43,11 @@ namespace GnssMetadata
 		}
 
 		/**
+		 * Returns true if the URI value is defined.
+		 */
+		bool IsDefined() const { return _value.length() > 0;}
+
+		/**
 		 * Sets the URI Value. 
 		 */
 		void Value( const String& value )

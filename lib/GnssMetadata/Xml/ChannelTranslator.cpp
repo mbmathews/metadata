@@ -19,14 +19,26 @@
 
 #include "ChannelTranslator.h"
 #include <GnssMetadata/Channel.h>
+#include "XmlDefs.h"
 #include <string.h>
 #include <stdlib.h>
 
 using namespace GnssMetadata;
 using namespace tinyxml2;
 
+NODELIST_BEGIN(_ChannelNodes)
+	NODELIST_ENTRY( "centerfreq", TE_FREQUENCY)
+	NODELIST_ENTRY( "translatedfreq", TE_FREQUENCY)
+	NODELIST_ENTRY( "inverted",	TE_SIMPLE_TYPE)
+	NODELIST_ENTRY( "delaybias", TE_DURATION)
+	NODELIST_ENTRY( "system",	TE_SYSTEM)
+	NODELIST_ENTRY( "comment",	TE_SIMPLE_TYPE)
+	NODELIST_ENTRY( "artifact", TE_SIMPLE_TYPE)
+NODELIST_END
+
+
 ChannelTranslator::ChannelTranslator() 
-: Translator( NULL)
+: Translator( (NodeEntry*) _ChannelNodes)
 {
 }
 
@@ -36,12 +48,11 @@ ChannelTranslator::ChannelTranslator()
 bool ChannelTranslator::OnRead( Context & ctxt, const XMLElement & elem, AccessorAdaptorBase* pAdaptor )
 {
 	const XMLElement* pchild;
-	//The node as been tested as a Frequency Translator
 	if( pAdaptor == NULL)
 		return false;
 	Channel channel;
 
-	bool retval = false;
+	bool bRetVal = true;
 
 	//Parse the AttributedObject Elements.
 	if( !ReadAttributedObject( channel, ctxt, elem))
@@ -56,12 +67,12 @@ bool ChannelTranslator::OnRead( Context & ctxt, const XMLElement & elem, Accesso
 		//Parse CenterFrequency
 		pchild = elem.FirstChildElement("centerfreq");
 		AccessorAdaptor<Channel, Frequency> adpt( &channel, &Channel::CenterFrequency);
-		retval = ReadElement( channel, ctxt, *pchild, &adpt);
+		bRetVal = ReadElement( channel, ctxt, *pchild, &adpt);
 
 		//Parse Parse Translated Frequency
 		pchild = elem.FirstChildElement("translatedfreq");
 		AccessorAdaptor<Channel, Frequency> adpt1( &channel, &Channel::TranslatedFrequency);
-		retval &= ReadElement( channel, ctxt, *pchild, &adpt1);
+		bRetVal &= ReadElement( channel, ctxt, *pchild, &adpt1);
 
 		//Inverted Element
 		pchild = elem.FirstChildElement("inverted");
@@ -71,17 +82,18 @@ bool ChannelTranslator::OnRead( Context & ctxt, const XMLElement & elem, Accesso
 		//delaybias
 		pchild = elem.FirstChildElement("delaybias");
 		AccessorAdaptor<Channel, Duration> adpt2( &channel, &Channel::DelayBias);
-		retval &= ReadElement( channel, ctxt, *pchild, &adpt2);
+		bRetVal &= ReadElement( channel, ctxt, *pchild, &adpt2);
 
 		//System
 		pchild = elem.FirstChildElement("system");
 		AccessorAdaptor<Channel, System> adpt3( &channel, &Channel::System);
-		retval &= ReadElement( channel, ctxt, *pchild, &adpt3);
+		bRetVal &= ReadElement( channel, ctxt, *pchild, &adpt3);
 	}
 
 	//Lastly set the channel on the specified object.
-	pAdaptor->set( &channel);
-	return true;
+	if( bRetVal)
+		pAdaptor->set( &channel);
+	return bRetVal;
 }
 /**
  * Write the current object 
@@ -107,7 +119,7 @@ void ChannelTranslator::OnWrite( const Object * pObject, pcstr pszName, Context 
 		//Inverted Element
 		pelem = elem.GetDocument()->NewElement( "inverted");
 		pelem->SetText( (pchannel->Inverted())? "true":"false");
-		*pelemc->InsertEndChild( pelem);
+		pelemc->InsertEndChild( pelem);
 
 		//delaybias
 		WriteElement( &pchannel->DelayBias(), "delaybias", ctxt, *pelemc);

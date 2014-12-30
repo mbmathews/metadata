@@ -30,6 +30,13 @@ namespace GnssMetadata
 		RfConfiguration(const RfConfiguration& rhs) 
 			: AttributedObject( rhs)
 		{}
+		const RfConfiguration& operator=( const RfConfiguration& rhs)
+		{
+			if( &rhs == this)
+				return *this;
+			AttributedObject::operator =(rhs);
+			return *this;
+		}
 	};
 	
 }

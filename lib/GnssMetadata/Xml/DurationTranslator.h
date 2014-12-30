@@ -1,5 +1,5 @@
 /**
- * File: Context.h
+ * File: DurationTranslator.h
  * Author: M.B. Mathews
  *  
  * Copyright(c) 2014 Institute of Navigation
@@ -16,42 +16,33 @@
  * GNU General Public License for more details.
  */
 
-#ifndef CONTEXT_H_H
-#define CONTEXT_H_H
+#ifndef DURATIONTRANSLATOR_H_H
+#define DURATIONTRANSLATOR_H_H
+
+#include <GnssMetadata/BaseTypes.h>
+#include <GnssMetadata/Xml/Translator.h>
 
 namespace GnssMetadata
 {
-	class AttributedObject;
-	class XmlProcessor;
-	class Translator;
-
-
 	/**
-	 * Class defines the current collection context 
-	 */
-	class Context
+	* Class implements xml translation for Duration Types.
+	*/
+	class DurationTranslator : public Translator
 	{
+		
 	public:
-		Context( XmlProcessor& _proc, Translator* _pParent, AttributedObject* _pContainer)
-			: proc( _proc), pParent( _pParent), pContainer( _pContainer)
-		{
-		}
+		DurationTranslator();
 
-		/** 
-		 * Pointer to the parent translator
-		 */
-		Translator* pParent;
-		
+	protected:
 		/**
-		 * XmlProcessor Reference.
+		 * Reads a node from the document and parses into metadata.
 		 */
-		XmlProcessor& proc;
-		
+		virtual bool OnRead( Context & ctxt, const tinyxml2::XMLElement & elem, AccessorAdaptorBase* pAdaptor = NULL );
 		/**
-		 * Pointer to the attributed object being operated on.
+		 * Write the current object 
 		 */
-		AttributedObject* pContainer;
+		virtual void OnWrite( const Object * pObject,  pcstr pszName, Context & ctxt, tinyxml2::XMLElement & elem );
+		
 	};
 }
-
 #endif

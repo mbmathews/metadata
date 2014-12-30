@@ -57,7 +57,7 @@ namespace GnssMetadata
 			Unspecified,
 			ArgumentError,
 			OutOfRange,
-			ParsingError,
+			TranslationError,
 			NotImplemented
 		};
 	public:
@@ -70,6 +70,7 @@ namespace GnssMetadata
 			_error( Unspecified)
 		{
 		}
+		ErrorType Error() const { return _error;}
 	private:
 		ErrorType _error;
 	};
@@ -106,12 +107,12 @@ namespace GnssMetadata
 	class TranslationException : public ApiException
 	{
 	public:
-		TranslationException( const char *const& _What = "Translation Error", size_t nLineNumber = 0)
-			: ApiException( _What, ParsingError), LineNumber( nLineNumber)
+		TranslationException( const char *const& _What = "Translation Error", int  iderror = 0)
+			: ApiException( _What, TranslationError), XmlError( iderror)
 		{
 		
 		}
-		size_t LineNumber;
+		size_t XmlError;
 	};
 
 	/**

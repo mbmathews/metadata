@@ -29,3 +29,5 @@
 *.bak
 *.pdb
 *.idb
+app/TestApp/obj/
+*.mdr

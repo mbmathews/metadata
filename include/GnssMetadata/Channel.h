@@ -45,6 +45,18 @@ namespace GnssMetadata
 			_system( rhs._system)
 		{}	
 
+		const Channel& operator=( const Channel& rhs)
+		{
+			if( &rhs == this)
+				return *this;
+			AttributedObject::operator =(rhs);
+			_centerFrequency = rhs._centerFrequency;
+			_translatedFrequency = rhs._translatedFrequency;
+			_delayBias = rhs._delayBias;
+			_inverted = rhs._inverted;
+			_system = rhs._system;
+			return *this;
+		}
 
 		const Frequency& CenterFrequency( ) const
 		{

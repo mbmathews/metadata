@@ -41,8 +41,36 @@ namespace GnssMetadata
 		DataFile( const String& id) : AttributedObject( id){}
 		DataFile() {}
 		DataFile(const DataFile& rhs) 
-			: AttributedObject( rhs)
+			: AttributedObject( rhs), _url(rhs._url), _copyright(rhs._copyright),
+			_createDate( rhs._createDate), _modDate(rhs._modDate), _next( rhs._next),
+			_previous( rhs._previous), _offset(rhs._offset), _owner(rhs._owner),
+			_rate( rhs._rate), _session(rhs._session), _streams(rhs._streams),
+			_subFrame(rhs._subFrame), _frame( rhs._frame)
+
 		{}	
+	
+		const DataFile& operator=( const DataFile& rhs)
+		{
+			if( &rhs == this)
+				return *this;
+			AttributedObject::operator =(rhs);
+
+			_url = rhs._url;
+			_copyright = rhs._copyright;
+			_createDate= rhs._createDate;
+			_modDate = rhs._modDate;
+			_next = rhs._next;
+			_previous = rhs._previous;
+			_offset = rhs._offset;
+			_owner = rhs._owner;
+			_rate = rhs._rate; 
+			_session = rhs._session; 
+			_streams = rhs._streams;
+			_subFrame = rhs._subFrame;
+			_frame = rhs._frame;
+			return *this;
+		}
+
 
 		const AnyUri& Url( ) const
 		{
@@ -219,16 +247,16 @@ namespace GnssMetadata
 		AnyUri _next;
 		
 		/**
+		 * Previous file URI in the sequence.
+		 */
+		AnyUri _previous;
+
+		/**
 		 * Byte offset into file for start of stream.
 		 */
 		size_t _offset;
 		
 		String _owner;
-		
-		/**
-		 * Previous file URI in the sequence.
-		 */
-		AnyUri _previous;
 		
 		Frequency _rate;
 		

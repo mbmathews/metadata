@@ -176,12 +176,12 @@
       <xs:element maxOccurs="1" minOccurs="0" name="frame" type="Frame"/>
       <xs:element maxOccurs="1" minOccurs="0" name="next" type="xs:anyURI">
         <xs:annotation>
-          <xs:documentation>Previous file URI in the sequence.</xs:documentation>
+          <xs:documentation>Next file URI in the sequence. Element is optional</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element maxOccurs="1" minOccurs="0" name="previous" type="xs:anyURI">
         <xs:annotation>
-          <xs:documentation>Previous file URI in the sequence.</xs:documentation>
+          <xs:documentation>Previous file URI in the sequence. Element is optional.</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element maxOccurs="unbounded" minOccurs="1" name="stream" type="Stream"/>

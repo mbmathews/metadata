@@ -26,6 +26,8 @@
 
 namespace GnssMetadata
 {
+	struct AccessorAdaptorBase;
+
 	/**
 	 * Processor loads/saves metadata information with XML file format.  The processor reads metadata compliant with the GnssMetadata Schema.
 	 */
@@ -36,12 +38,12 @@ namespace GnssMetadata
 		/**
 		 * Loads a metadata object with data in the specified file.
 		 */
-		bool Load( const String & sfilename, const bool bProcessIncludes, Metadata & metadata );
+		bool Load( const char* szFilename, const bool bProcessIncludes, Metadata & metadata );
 
 		/**
 		 * Save the metadata object to the specified XML file.
 		 */
-		bool Save( const String & sfilename, const Metadata & metadata );
+		bool Save( const char* szFilename, const Metadata & metadata );
 
 		/**
 		 * Returns a reference to the XML Document
@@ -59,7 +61,7 @@ namespace GnssMetadata
 		/**
 		 * Processes the current element within the context of the attributed object.
 		 */
-		bool ReadElement(AttributedObject& aobj, Context & ctxt, const tinyxml2::XMLElement & elem, AccessorAdaptorBase* pAdaptor);
+		bool ReadElement( Context & ctxt, const tinyxml2::XMLElement & elem, AccessorAdaptorBase* pAdaptor);
 		
 		/**
 		 * Writes the specified metadata object to xml within specified context 
@@ -71,7 +73,11 @@ namespace GnssMetadata
 	private:
 		tinyxml2::XMLDocument _doc;
 
-		
+	
 	};
+
+
+
+
 }
 #endif

@@ -19,6 +19,7 @@
 
 #include "FrequencyTranslator.h"
 #include <GnssMetadata/Frequency.h>
+#include "XmlDefs.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -50,7 +51,10 @@ bool FrequencyTranslator::OnRead( Context & ctxt, const XMLElement & elem, Acces
 	//The node as been tested as a Frequency Translator
 	if( pAdaptor != NULL)
 	{
-		pcstr format = elem.Attribute("format","Hz");
+		pcstr format = elem.Attribute("format");
+		if( format == NULL) 
+			format = "Hz";
+		
 		Frequency::FrequencyFormat fmt = ToFormat( format);
 		Frequency freq;
 		switch( fmt)
@@ -86,7 +90,7 @@ void FrequencyTranslator::OnWrite( const Object * pObject, pcstr pszName, Contex
 		throw TranslationException("FrequencyTranslator cannot cast frequency object");
 
 	XMLElement* pelemf = elem.GetDocument()->NewElement( pszName);
-	pelemf->Attribute("format", _szfmts[ pfreq->Format()]);
+	pelemf->SetAttribute("format", _szfmts[ pfreq->Format()]);
 	char buff[64];
 	const Frequency::ValueType& val = pfreq->Value();
 	

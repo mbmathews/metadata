@@ -64,6 +64,15 @@ namespace GnssMetadata
 		{
 			
 		}
+
+		/**
+		 * Returns true if Subframe state is not in default configuration.
+		 */
+		bool IsDefined() const 
+		{
+			return _alignment != Unspecified || _endian != Undefined || _size > 0;
+		}
+
 		/**
 		 * Gets the word alignment for the subframe.
 		 */
