@@ -58,6 +58,11 @@ namespace GnssMetadata
 			
 		}
 
+		SubFrame( size_t size, WordEndian endian = Undefined, size_t words =1, WordAlignment align = Unspecified)
+			: _alignment( align), _endian( endian), _size(size), _words(words)
+		{
+		}
+
 		SubFrame( const SubFrame& rhs) 
 		: _alignment( rhs._alignment ), _endian(rhs._endian), 
 			_size(rhs._size), _words( rhs._words)

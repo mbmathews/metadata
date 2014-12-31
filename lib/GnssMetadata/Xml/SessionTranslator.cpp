@@ -147,12 +147,12 @@ void SessionTranslator::OnWrite( const Object * pObject, pcstr pszName, Context 
 
 		//Write conact
 		pelem = elem.GetDocument()->NewElement( "contact");
-		pelem->SetText( psession->Campaign().c_str());
+		pelem->SetText( psession->Contact().c_str());
 		pelemc->InsertEndChild(pelem);
 
 		//Write poc
 		pelem = elem.GetDocument()->NewElement( "poc");
-		pelem->SetText( psession->Campaign().c_str());
+		pelem->SetText( psession->Poc().c_str());
 		pelemc->InsertEndChild(pelem);
 	}
 	

@@ -147,13 +147,14 @@ const Date& Date::operator=( const Date& rhs)
 String Date::toString( const String & sFormat )
 {
 	char buff[64];
-	const struct tm* putc = TmPtr();
-	double dsec = putc->tm_sec + _dt.tv_nsec*1e-9;
+	struct tm utc;
+	TmPtr(&utc);
+	double dsec = utc.tm_sec + _dt.tv_nsec*1e-9;
 
 	//2012-10-12T00:06:12.314532Z
 	sprintf(buff, "%4d-%02d-%02dT%02d:%02d:%0.9lfZ",
-		putc->tm_year+1900, putc->tm_mon+1, putc->tm_mday,
-		putc->tm_hour, putc->tm_min, dsec);
+		utc.tm_year+1900, utc.tm_mon+1, utc.tm_mday,
+		utc.tm_hour, utc.tm_min, dsec);
 
 	return String( buff);
 }

@@ -32,6 +32,7 @@ using namespace tinyxml2;
 * Metadata Nodes definition
 /*****************************************************************************/
 NODELIST_BEGIN( _MetadataNodes)
+	NODELIST_ENTRY( "include", TE_ANYURI)
 	NODELIST_ENTRY( "datafile", TE_DATAFILE)
 	NODELIST_ENTRY( "channel", TE_CHANNEL)
 	NODELIST_ENTRY( "system", TE_SYSTEM)
@@ -54,8 +55,7 @@ bool MetadataTranslator::OnRead( Context & ctxt, const XMLElement & elem, Access
 
 	Metadata& metadata = dynamic_cast<Metadata&>( *ctxt.pContainer);
 
-	//TODO Process the included metadata references.
-
+	bRetVal &= ReadList<AnyUri>(metadata.Includes(), "include", ctxt, elem);
 	bRetVal &= ReadList<DataFile>(metadata.DataFiles(), "datafile", ctxt, elem);
 	bRetVal &= ReadList<Session>(metadata.Sessions(), "session", ctxt, elem);
 	bRetVal &= ReadList<Channel>(metadata.Channels(), "channel", ctxt, elem);
@@ -80,9 +80,7 @@ void MetadataTranslator::OnWrite( const Object * pObject, pcstr pszName, Context
 	//Set the namespace for the Metadata.
 	pelemc->SetAttribute( "xmlns", METADATA_NAMESPACE);
 
-	//TODO Write include elements.
-
-	//Write datafiles
+	WriteList<AnyUri>( pmetadata->Includes(), "include", ctxt, *pelemc);
 	WriteList<DataFile>( pmetadata->DataFiles(), "datafile", ctxt, *pelemc);
 	WriteList<Session>( pmetadata->Sessions(), "session", ctxt, *pelemc);
 	WriteList<Channel>( pmetadata->Channels(), "channel", ctxt, *pelemc);

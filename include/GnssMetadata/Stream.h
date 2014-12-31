@@ -56,7 +56,8 @@ namespace GnssMetadata
 			
 		};
 	public:
-		Stream( const String& id) : AttributedObject( id){}
+		Stream( const String& id) : AttributedObject( id),
+			_alignment( Undefined), _format( IQ), _packedbits(0), _quantization(8), _rateFactor(1) {}
 		Stream() : _alignment( Undefined), _format( IQ), _packedbits(0), _quantization(8), _rateFactor(1) {}
 		Stream(const Stream& rhs) 
 			: AttributedObject( rhs),

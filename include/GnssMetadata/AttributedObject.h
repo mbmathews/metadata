@@ -90,6 +90,24 @@ namespace GnssMetadata
 		}
 
 		/**
+		 * Adds a comment to the object.
+		 */
+		void AddComment( const String& sComment, Comment::CommentFormat fmt = Comment::text )
+		{
+			Comment cmt( sComment, fmt);
+			_comments.push_back( cmt);
+		}
+
+		/**
+		 * Adds an artifact to the object.
+		 */
+		void AddArtifact( const String& sArtifact)
+		{
+			AnyUri uri( sArtifact);
+			_artifacts.push_back( uri);
+		}
+
+		/**
 		 *  Returns a string representation of the object.
 		 */
 		virtual String toString( const String & sFormat = DefaultFormat );

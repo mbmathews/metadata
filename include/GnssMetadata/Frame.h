@@ -36,6 +36,11 @@ namespace GnssMetadata
 		{
 		}
 
+		Frame(size_t countSubFrames, size_t sizeHeader = 0, size_t sizeFooter =0): _count(countSubFrames), 
+			_sizeHeader(sizeHeader), _sizeFooter(sizeFooter)
+		{
+		}
+
 		Frame(const Frame& rhs): _count(rhs._count), 
 			_sizeHeader(rhs._sizeHeader), _sizeFooter(rhs._sizeFooter)
 		{

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.ion.org/XMLSchema/GnssMetadata.xsd">
+    <datafile>
+        <url>141230-gps-4msps.bds</url>
+        <createDate>2014-12-30T22:38:54.905999999Z</createDate>
+        <modDate>2014-12-30T22:38:54.905999999Z</modDate>
+        <session id="0">
+            <scenario>Example 2</scenario>
+            <campaign>GNSS Metadata API Testing</campaign>
+            <location lat="47.76471300" lon="-122.15612900" height="25.610"/>
+            <contact>J. Doe</contact>
+            <poc></poc>
+            <comment format="text">This is an example metadata specification with two interleaved streams.</comment>
+        </session>
+        <rate format="MHz">4.0000000000000000e+000</rate>
+        <offset>588</offset>
+        <subframe words="1" size="32" endian="Little" alignment="Left"/>
+        <frame sizeHeader="96" sizeFooter="0" count="4000"/>
+        <stream id="L1ca">
+            <ratefactor>1</ratefactor>
+            <quantization>8</quantization>
+            <encoding>INT8</encoding>
+            <format>IQ</format>
+            <channel id="L1External">
+                <centerfreq format="GHz">1.5754200000000001e+003</centerfreq>
+                <translatedfreq format="Hz">3.8400000000000000e+004</translatedfreq>
+                <inverted>false</inverted>
+                <delaybias format="sec">0.0000000000000000e+000</delaybias>
+                <system id="A2300-1"/>
+            </channel>
+        </stream>
+        <stream id="L2C">
+            <ratefactor>1</ratefactor>
+            <quantization>8</quantization>
+            <encoding>INT8</encoding>
+            <format>IQ</format>
+            <channel id="L2cExternal">
+                <centerfreq format="GHz">1.2275999999999999e+003</centerfreq>
+                <translatedfreq format="Hz">3.8400000000000000e+004</translatedfreq>
+                <inverted>false</inverted>
+                <delaybias format="sec">0.0000000000000000e+000</delaybias>
+                <system id="A2300-1"/>
+            </channel>
+        </stream>
+    </datafile>
+    <system type="Undefined" id="A2300-1">
+        <model>ASR-2300</model>
+        <comment format="text">ASR-2300 configured with standard firmware and FPGA id=1, version=1.18.</comment>
+    </system>
+</metadata>

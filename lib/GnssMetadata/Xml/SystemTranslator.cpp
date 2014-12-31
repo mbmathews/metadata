@@ -123,10 +123,12 @@ void SystemTranslator::OnWrite( const Object * pObject, pcstr pszName, Context &
 		pelemc->InsertEndChild(pelem);
 
 		//Write RfConfig
-		WriteElement( &psystem->Rfconfig(), "rfconfig", ctxt, *pelemc);
+		if( psystem->Rfconfig().Id().length() > 0)
+			WriteElement( &psystem->Rfconfig(), "rfconfig", ctxt, *pelemc);
 
 		//Write Oscillator.
-		WriteElement( &psystem->Oscillator(), "oscillator", ctxt, *pelemc);
+		if( psystem->Oscillator().Id().length() > 0)
+			WriteElement( &psystem->Oscillator(), "oscillator", ctxt, *pelemc);
 	}
 	
 	//Fill out id, artifacts, and comments last in accordance

@@ -49,7 +49,7 @@ namespace GnssMetadata
 	/**
 	 * Standard API exception
 	 */
-	class ApiException : std::exception
+	class ApiException : public std::exception
 	{
 	public:
 		enum ErrorType

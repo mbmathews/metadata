@@ -287,6 +287,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Xml\AnyUriTranslator.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\AttributedObject.cpp"
 				>
 			</File>
@@ -398,6 +402,10 @@
 			>
 			<File
 				RelativePath="..\..\include\GnssMetadata\AnyUri.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Xml\AnyUriTranslator.h"
 				>
 			</File>
 			<File

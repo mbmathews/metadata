@@ -189,7 +189,7 @@ void StreamTranslator::OnWrite( const Object * pObject, pcstr pszName, Context &
 		pelemc->InsertEndChild( pelem);
 
 		//Write packedbits
-		if( pstream->Packedbits() != pstream->Quantization())
+		if( pstream->Packedbits() >0 && pstream->Packedbits() != pstream->Quantization())
 		{
 			pelem = elem.GetDocument()->NewElement( "packedbits");
 			sprintf( buff, "%ld", pstream->Packedbits() );
