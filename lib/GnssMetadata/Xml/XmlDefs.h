@@ -29,6 +29,7 @@ namespace GnssMetadata
 	enum TranslatorId
 	{
 	
+		TE_ANYURI,
 		TE_FREQUENCY,
 		TE_DURATION,
 		TE_STREAM,

@@ -18,6 +18,7 @@
 
 
 #include <GnssMetadata/Xml/XmlProcessor.h>
+#include "AnyUriTranslator.h"
 #include "MetadataTranslator.h"
 #include "StreamTranslator.h"
 #include "ChannelTranslator.h"
@@ -49,6 +50,7 @@ static struct TranslatorEntry
 	Translator& translator;
 } _Translators[] =  
 {
+	TE_ANYURI, *(new AnyUriTranslator()),
 	TE_FREQUENCY, *(new FrequencyTranslator()),
 	TE_DURATION, *(new DurationTranslator()),
 	TE_STREAM, *(new StreamTranslator()),
