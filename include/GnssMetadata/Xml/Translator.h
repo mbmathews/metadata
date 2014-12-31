@@ -50,7 +50,7 @@ namespace GnssMetadata
 		/**
 		 * Write the current object 
 		 */
-		virtual void OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, tinyxml2::XMLElement & elem ) = 0;
+		virtual void OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, tinyxml2::XMLNode & elem ) = 0;
 	protected:
 		/**
 		* Accesor returns the array of allowed xml nodes for this
@@ -79,7 +79,7 @@ namespace GnssMetadata
 		/**
 		 * Writes the attributed object id, comments, and artifacts.
 		 */
-		static void WriteAttributedObject(const AttributedObject& aobj, Context& ctxt, tinyxml2::XMLElement & elem);
+		static void WriteAttributedObject(const AttributedObject& aobj, Context& ctxt, tinyxml2::XMLElement & elem, bool bIdAttributeRequired = true);
 
 	private:
 		NodeEntry* _nodesAllowed;

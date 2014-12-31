@@ -110,7 +110,7 @@ bool SessionTranslator::OnRead( Context & ctxt, const XMLElement & elem, Accesso
 /**
  * Write the current object 
  */
-void SessionTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, XMLElement & elem )
+void SessionTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, tinyxml2::XMLNode & elem )
 {
 	const Session* psession = dynamic_cast< const Session*>(pObject);
 	if( psession == NULL) 

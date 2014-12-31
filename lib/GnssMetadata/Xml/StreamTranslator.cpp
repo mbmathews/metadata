@@ -127,8 +127,11 @@ bool StreamTranslator::OnRead( Context & ctxt, const XMLElement & elem, Accessor
 			stream.Packedbits(stream.Quantization());
 
 		//Parse alignment
-		pchild = elem.FirstChildElement("alignment");
-		stream.Alignment( ToAlignmentFormat(pchild->GetText()));
+		if( pchild != NULL)
+		{
+			pchild = elem.FirstChildElement("alignment");
+			stream.Alignment( ToAlignmentFormat(pchild->GetText()));
+		}
 
 		//Parse encoding
 		pchild = elem.FirstChildElement("encoding");
@@ -160,7 +163,7 @@ bool StreamTranslator::OnRead( Context & ctxt, const XMLElement & elem, Accessor
 /**
  * Write the current object 
  */
-void StreamTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, XMLElement & elem )
+void StreamTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, tinyxml2::XMLNode & elem )
 {
 	const Stream* pstream = dynamic_cast< const Stream*>(pObject);
 	if( pstream == NULL) 
@@ -186,15 +189,18 @@ void StreamTranslator::OnWrite( const Object * pObject, pcstr pszName, Context &
 		pelemc->InsertEndChild( pelem);
 
 		//Write packedbits
-		pelem = elem.GetDocument()->NewElement( "packedbits");
-		sprintf( buff, "%ld", pstream->Packedbits() );
-		pelem->SetText( buff );
-		pelemc->InsertEndChild( pelem);
+		if( pstream->Packedbits() != pstream->Quantization())
+		{
+			pelem = elem.GetDocument()->NewElement( "packedbits");
+			sprintf( buff, "%ld", pstream->Packedbits() );
+			pelem->SetText( buff );
+			pelemc->InsertEndChild( pelem);
 
-		//Write alignment
-		pelem = elem.GetDocument()->NewElement( "alignment");
-		pelem->SetText( _szAlignFmts[ pstream->Alignment()] );
-		pelemc->InsertEndChild( pelem);
+			//Write alignment
+			pelem = elem.GetDocument()->NewElement( "alignment");
+			pelem->SetText( _szAlignFmts[ pstream->Alignment()] );
+			pelemc->InsertEndChild( pelem);
+		}
 
 		//Write encoding
 		pelem = elem.GetDocument()->NewElement( "encoding");
@@ -207,7 +213,8 @@ void StreamTranslator::OnWrite( const Object * pObject, pcstr pszName, Context &
 		pelemc->InsertEndChild( pelem);
 		
 		//Write delaybias
-		WriteElement( &pstream->DelayBias(), "delaybias", ctxt, *pelemc);
+		if( pstream->DelayBias().Value() > 0)
+			WriteElement( &pstream->DelayBias(), "delaybias", ctxt, *pelemc);
 
 		//Write channel
 		WriteElement( &pstream->Channel(), "channel", ctxt, *pelemc);

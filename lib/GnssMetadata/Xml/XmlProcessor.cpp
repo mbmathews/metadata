@@ -62,17 +62,20 @@ static struct TranslatorEntry
 };
 #define COUNT_TRANSLATORS (sizeof(_Translators)/sizeof(TranslatorEntry))
 
-Translator& TranslatorFromId( TranslatorId id)
+/** 
+ * Helper function itereates Translator list given index.
+ */
+inline Translator& TranslatorFromId( TranslatorId id)
 {
-	for( int i = 0; i < COUNT_TRANSLATORS; i++)
-	{
-		if( id == _Translators[i].id)
-			return _Translators[i].translator;
-	}
-	
-	throw GnssMetadata::OutOfRangeException( "Invalid translator ID");
+	if( id >= TE_END)
+		throw GnssMetadata::OutOfRangeException( "Invalid translator ID");
+	return _Translators[ id].translator;
 }
 
+/** 
+ * Helper function iterates provided NodeEntry array looking for the correct
+ * translator ID.
+ */
 TranslatorId TranslatorIdFromElemName( const char* szNodeName, NodeEntry* pNodes)
 {
 	//Iterate to the end of the node entries.
@@ -87,7 +90,6 @@ TranslatorId TranslatorIdFromElemName( const char* szNodeName, NodeEntry* pNodes
 		pNodes++;
 	}
 	return TE_END;
-
 }
 
 
@@ -137,9 +139,22 @@ bool XmlProcessor::Load( const char* szFilename, const bool bProcessIncludes, Me
 /**
  * Save the metadata object to the specified XML file.
  */
-bool XmlProcessor::Save( const char* szFilename, const Metadata & metadata )
+void XmlProcessor::Save( const char* szFilename, const Metadata & metadata )
 {
-	return false;
+	tinyxml2::XMLDocument doc;
+	XMLDeclaration* decl = doc.NewDeclaration();
+	doc.InsertFirstChild( decl);
+
+	Context ctxt( *this, NULL, NULL);
+
+	//Translate metadata into XML and Save if successful.
+	Translator& trans = TranslatorFromId( TE_METADATA);
+	trans.OnWrite( &metadata, "metadata", ctxt, doc);
+	
+
+	XMLError err = doc.SaveFile( szFilename);
+	if( err != XML_SUCCESS)
+		throw TranslationException( "Tiny XML Translation Error", err);
 }
 
 /**
@@ -178,4 +193,29 @@ bool XmlProcessor::ReadElement( Context & ctxt, const tinyxml2::XMLElement & ele
  */
 void XmlProcessor::WriteElement( const Object * pObject, const char* pszName, Context & ctxt, tinyxml2::XMLElement & elem )
 {
+	TranslatorId id = TE_END;
+
+	//Use the current translator if available to lookup appropriate
+	//translator for the current element.   If not available,
+	//do a global search.
+	if( ctxt.pParent != NULL)
+	{
+		id = TranslatorIdFromElemName( pszName, ctxt.pParent->GetAllowedNodes() );	
+	}
+	else //Do a global lookup.  
+	{
+		for( int i = 0; i < COUNT_TRANSLATORS && id == TE_END; i++)
+		{
+			NodeEntry* pNodes = _Translators[i].translator.GetAllowedNodes();
+			if(pNodes == NULL) continue;
+
+			id = TranslatorIdFromElemName( pszName, pNodes);	
+		}
+	}
+
+	//Get the translator and attempt to process the current
+	//element.
+	Translator& trans = TranslatorFromId( id);
+	return trans.OnWrite( pObject, pszName, ctxt, elem);
+
 }

@@ -43,7 +43,7 @@ namespace GnssMetadata
 		/**
 		 * Save the metadata object to the specified XML file.
 		 */
-		bool Save( const char* szFilename, const Metadata & metadata );
+		void Save( const char* szFilename, const Metadata & metadata );
 
 		/**
 		 * Returns a reference to the XML Document

@@ -29,6 +29,12 @@ int main(int, char**)
 	Metadata md2;
 	XmlProcessor xproc;
 	if( xproc.Load( "testmetadata1.xml", false, md2) )
+	{
 		printf("Xml Processed successfully.\n");
+
+		//Save the metadata to another file.
+		xproc.Save("metadataout.xml", md2);
+	}
+
 
 }

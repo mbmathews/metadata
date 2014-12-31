@@ -190,7 +190,7 @@ bool DatafileTranslator::OnRead( Context & ctxt, const XMLElement & elem, Access
 /**
  * Write the current object 
  */
-void DatafileTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, XMLElement & elem )
+void DatafileTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, tinyxml2::XMLNode & elem )
 {
 	const DataFile* pdatafile = dynamic_cast< const DataFile*>(pObject);
 	if( pdatafile == NULL) 
@@ -300,6 +300,6 @@ void DatafileTranslator::OnWrite( const Object * pObject, pcstr pszName, Context
 	
 	//Fill out id, artifacts, and comments last in accordance
 	//with schema.
-	WriteAttributedObject( *pdatafile, ctxt, *pelemc);
+	WriteAttributedObject( *pdatafile, ctxt, *pelemc, false);
 	elem.InsertEndChild( pelemc);
 }

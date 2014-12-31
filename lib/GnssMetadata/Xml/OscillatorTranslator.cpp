@@ -55,7 +55,7 @@ bool OscillatorTranslator::OnRead( Context & ctxt, const XMLElement & elem, Acce
 /**
  * Write the current object 
  */
-void OscillatorTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, XMLElement & elem )
+void OscillatorTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, tinyxml2::XMLNode & elem )
 {
 	const Oscillator* posc = dynamic_cast< const Oscillator*>(pObject);
 	if( posc == NULL) 

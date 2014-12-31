@@ -41,7 +41,7 @@ namespace GnssMetadata
 		/**
 		 * Write the current object 
 		 */
-		virtual void OnWrite( const Object * pObject,  pcstr pszName, Context & ctxt, tinyxml2::XMLElement & elem );
+		virtual void OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, tinyxml2::XMLNode & elem );
 		
 	};
 }

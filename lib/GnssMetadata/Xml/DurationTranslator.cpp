@@ -68,7 +68,7 @@ bool DurationTranslator::OnRead( Context & ctxt, const XMLElement & elem, Access
 /**
  * Write the current object 
  */
-void DurationTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, XMLElement & elem )
+void DurationTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, tinyxml2::XMLNode & elem )
 {
 	const Duration* pdur = dynamic_cast< const Duration*>(pObject);
 	if( pdur == NULL) 

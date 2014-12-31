@@ -204,11 +204,11 @@
           <xs:documentation>The total number of bits per sample.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="alignment" default="Undefined" type="Alignment"/>
+      <xs:element name="alignment" maxOccurs="1" minOccurs="0" default="Undefined" type="Alignment"/>
       <xs:element name="encoding" type="xs:string"/>
       <xs:element name="format" type="SampleFormat"/>
-      <xs:element name="delaybias" type="Duration" minOccurs="0"/>
-      <xs:element name="channel" maxOccurs="1" type="Channel"/>
+      <xs:element name="delaybias" maxOccurs="1" minOccurs="0" type="Duration" />
+      <xs:element name="channel"   maxOccurs="1" type="Channel"/>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="comment" type="Comment"/>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="artifact" type="xs:anyURI"/>
     </xs:sequence>

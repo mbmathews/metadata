@@ -19,24 +19,28 @@
 #ifndef XMLDEFS_H_H
 #define XMLDEFS_H_H
 #include<list>
+
+#define METADATA_NAMESPACE "http://www.ion.org/XMLSchema/GnssMetadata.xsd"
+
 namespace GnssMetadata
 {
 	class Context;
 
 	enum TranslatorId
 	{
-		TE_SIMPLE_TYPE,
+	
 		TE_FREQUENCY,
-		TE_CHANNEL,
 		TE_DURATION,
 		TE_STREAM,
-		TE_METADATA,
+		TE_CHANNEL,
 		TE_DATAFILE,
 		TE_SYSTEM,
+		TE_SESSION,
 		TE_RFCONFIG,
 		TE_OSCILLATOR,
-		TE_SESSION,
-		TE_END
+		TE_METADATA,
+		TE_END,
+		TE_SIMPLE_TYPE
 
 	};
 

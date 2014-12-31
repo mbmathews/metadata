@@ -83,7 +83,7 @@ bool FrequencyTranslator::OnRead( Context & ctxt, const XMLElement & elem, Acces
 /**
  * Write the current object 
  */
-void FrequencyTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, XMLElement & elem )
+void FrequencyTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, tinyxml2::XMLNode & elem )
 {
 	const Frequency* pfreq = dynamic_cast< const Frequency*>(pObject);
 	if( pfreq == NULL) 

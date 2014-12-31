@@ -55,7 +55,7 @@ bool RfConfigTranslator::OnRead( Context & ctxt, const XMLElement & elem, Access
 /**
  * Write the current object 
  */
-void RfConfigTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, XMLElement & elem )
+void RfConfigTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, tinyxml2::XMLNode & elem )
 {
 	const RfConfiguration* pconfig = dynamic_cast< const RfConfiguration*>(pObject);
 	if( pconfig == NULL) 

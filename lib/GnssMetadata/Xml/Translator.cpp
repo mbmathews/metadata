@@ -93,10 +93,15 @@ bool Translator::ReadAttributedObject( AttributedObject& aobj,
 /**
  * Writes the attributed object id, comments, and artifacts.
  */
-void Translator::WriteAttributedObject(const AttributedObject& aobj, Context& ctxt, tinyxml2::XMLElement & elem)
+void Translator::WriteAttributedObject(const AttributedObject& aobj, Context& ctxt, tinyxml2::XMLElement & elem, bool bIdAttributeRequired)
 {
 	//Write the ID.
-	elem.SetAttribute( "id", aobj.Id().c_str());
+	if( aobj.Id().length() > 0 )
+		elem.SetAttribute( "id", aobj.Id().c_str());
+	else if( bIdAttributeRequired )
+		throw GnssMetadata::TranslationException( "Required id attribute not defined.");
+
+
 
 	//Write the comments.
 	CommentList::const_iterator citer = aobj.Comments().begin();

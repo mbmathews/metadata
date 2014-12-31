@@ -102,7 +102,7 @@ bool SystemTranslator::OnRead( Context & ctxt, const XMLElement & elem, Accessor
 /**
  * Write the current object 
  */
-void SystemTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, XMLElement & elem )
+void SystemTranslator::OnWrite( const Object * pObject, pcstr pszName, Context & ctxt, tinyxml2::XMLNode & elem )
 {
 	const System* psystem = dynamic_cast< const System*>(pObject);
 	if( psystem == NULL) 

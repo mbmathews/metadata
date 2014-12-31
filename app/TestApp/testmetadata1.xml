@@ -14,7 +14,6 @@
     <stream id="l1ca">
       <ratefactor>1</ratefactor>
       <quantization>32</quantization>
-      <alignment>Left</alignment>
       <encoding>none</encoding>
       <format>IQ</format>
       <channel id="gpsl1ext"/>
